@@ -1,6 +1,11 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"Go-rest-api/internal/database"
+	"Go-rest-api/internal/exercise"
+
+	"github.com/gin-gonic/gin"
+)
 
 func main() {
 	route := gin.Default()
@@ -10,5 +15,10 @@ func main() {
 			"message": "hellos",
 		})
 	})
+
+	dbConn := database.NewDatabaseConn()
+	eu := exercise.NewExerciseUsecase(dbConn)
+	route.GET("/exercises/:id", eu.GetExerciseByID)
+
 	route.Run(":1234")
 }
