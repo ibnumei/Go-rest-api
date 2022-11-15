@@ -17,7 +17,8 @@ func NewUserUsecase(db *gorm.DB) *UserUsecase {
 
 func (uu UserUsecase) Register(c *gin.Context) {
 
-	// bikin struct sendiri untuk keperluan input user, bisa berbeda dari struct  user (model struct) yang di sudah di define(yg sama seperti db)
+	// bikin struct sendiri untuk keperluan input user, 
+	// bisa berbeda dari struct  user (model struct) yang di sudah di define(yg sama seperti db)
 	var userRequest UserRequest
 
 	if err := c.ShouldBind(&userRequest);  err != nil {

@@ -3,6 +3,7 @@ package main
 import (
 	"Go-rest-api/internal/database"
 	"Go-rest-api/internal/exercise"
+	"Go-rest-api/internal/middleware"
 	"Go-rest-api/internal/user"
 
 	"github.com/gin-gonic/gin"
@@ -22,7 +23,9 @@ func main() {
 	uu := user.NewUserUsecase(dbConn)
 
 	//exercise endpoint
-	route.GET("/exercises/:id", eu.GetExerciseByID)
+	route.GET("/exercises/:id", middleware.WithAuth(), eu.GetExerciseByID)
+
+	route.GET("/exercises/:id/scores", middleware.WithAuth(), eu.GetScore)
 
 	//user endpoint
 	route.POST("/register", uu.Register)

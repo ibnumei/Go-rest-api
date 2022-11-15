@@ -58,3 +58,22 @@ func (u User) GenerateJWT() (string, error) {
 	}
 	return tokenString, err
 }
+
+  //decrypt jwt untuk auth akses data, middleware request
+  func (u User) DecryptJWT(token string) (map[string]interface{}, error) {
+	parsedToken, err := jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
+		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, errors.New("auth invalid")
+		} 
+		return signature, nil
+	})
+
+	data := make(map[string]interface{})
+	if err != nil {
+		return data, err
+	}
+	if !parsedToken.Valid {
+		return data, errors.New("invalid token")
+	}
+	return parsedToken.Claims.(jwt.MapClaims), nil
+}
