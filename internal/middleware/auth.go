@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"Go-rest-api/internal/domain"
+	"Go-rest-api/internal/user/usecase"
 	"context"
 	"fmt"
 	"strings"
@@ -9,7 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func WithAuth() gin.HandlerFunc {
+func WithAuth(userUsecase *usecase.UserUsecase) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := c.GetHeader("Authorization")
 		if authHeader == "" {
@@ -46,6 +47,15 @@ func WithAuth() gin.HandlerFunc {
 				"message": "unauthorized",
 			})
 			c.Abort()
+		}
+		userID := int(data["user_id"].(float64))
+		dbUser, err := userUsecase.GetUserByID(c.Request.Context(), userID)
+		if err != nil || dbUser.ID == 0 {
+			c.JSON(401, map[string]string{
+				"message": "unauthorized",
+			})
+			c.Abort()
+			return
 		}
 		ctxUserID := context.WithValue(c.Request.Context(), "user_id", int(data["user_id"].(float64)))
 		c.Request = c.Request.WithContext(ctxUserID)
