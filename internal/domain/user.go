@@ -18,7 +18,7 @@ type User struct {
 	UpdatedAt time.Time
 }
 
-var signature = []byte("mySecre4atSignatur3")
+var signature = []byte("mySignaturePrivateKey")
 
 //validation request user from json
 func NewUser(name, email, password, noHp string) (User, error) {

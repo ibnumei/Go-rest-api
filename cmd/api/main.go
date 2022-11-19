@@ -23,8 +23,9 @@ func main() {
 
 	dbConn := database.NewDatabaseConn()
 	eu := exercise.NewExerciseUsecase(dbConn)
-	userRepo := repository.NewUserDBRepo(dbConn)
-	uu := usecase.NewUserUsecase(userRepo)
+	// userRepo := repository.NewUserDBRepo(dbConn) //jika data source ke db
+	userMcs := repository.NewMcsUserRepo() //jika data source ks ms lain
+	uu := usecase.NewUserUsecase(userMcs)
 
 	//exercise endpoint
 	route.GET("/exercises/:id", middleware.WithAuth(uu), eu.GetExerciseByID)
