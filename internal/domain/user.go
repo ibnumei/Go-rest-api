@@ -77,3 +77,7 @@ func (u User) GenerateJWT() (string, error) {
 	}
 	return parsedToken.Claims.(jwt.MapClaims), nil
 }
+
+func (u User) ComparePassword(password string) error {
+	return bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(password))
+}

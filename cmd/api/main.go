@@ -29,5 +29,6 @@ func main() {
 
 	//user endpoint
 	route.POST("/register", uu.Register)
+	route.POST("/login", uu.Login)
 	route.Run(":1234")
 }
